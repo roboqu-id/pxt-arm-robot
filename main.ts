@@ -39,7 +39,9 @@ namespace expand {
     }
 
     export enum Dir {
+        //% blockId="CW" block="CW"
         CW = 1,
+        //% blockId="CCW" block="CCW"
         CCW = -1
     }
 
@@ -100,16 +102,16 @@ namespace expand {
         setPwm(index + 7, 0, pulse)
     }
 
-    //%block="Motor|%index|dir|%dir|speed|%speed"
+    //%block="Motor|%index|dir|%direction|speed|%speed"
     //%weight=8
     //%speed.min=0 speed.max=100
-    //%dir.fieldEditor="gridpicker" dir.fieldOption.colums=2
+    //%direction.fieldEditor="gridpicker" direction.fieldOption.colums=2
     //%index.fieldEditor="gridpicker" index.fieldOptions.colums=4
     export function setMotor(index: Motors, direction: Dir, speed: number) {
         if (!initial) {
             initPCA9685()
         }
-        speed = speed * 40.96 * direction
+        speed = speed * 40 * direction
         if (speed >= 4096) {
             speed = 4096
         }
@@ -118,7 +120,7 @@ namespace expand {
         }
         let mPlus = (4 - index) * 2 + 1
         let mMin = (4 - index) * 2
-        if (speed <= 0) {
+        if (speed >= 0) {
             setPwm(mPlus, 0, speed)
             setPwm(mMin, 0, 0)
         }
